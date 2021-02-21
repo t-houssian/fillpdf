@@ -8,15 +8,32 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - Flattens pdfs (Turns to an image)
 
 # Function Documentation
-
+#####
     write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 - output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
 - data_dict- dictionary that contains the fields to write to as your key and what to write to it as your value
-
+###### For Example:
     data_dict = {'Address 1 Text Box': '500 West Main Street',
     'Driving License Check Box': 'Yes',
     'Language 1 Check Box': 'Off',}
+    
+    fillpdfs.write_fillable_pdf('blank.pdf', 'new.pdf', data_dict)
+- For radio boxes ('Off' = not filled, 'Yes' = filled) 
+
+##### flatten_pdf
+    flatten_pdf(input_pdf_path, output_pdf_path)
+- input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+- output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
+###### For Example:
+    fillpdfs.flatten_pdf('new.pdf', 'newflat.pdf')
+
+##### get_form_fields
+    get_form_fields(input_pdf_path)
+- input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+###### For Example:
+    fillpdfs.get_form_fields('blank.pdf')
+
 
 [Software Demo Video](http://youtube.link.goes.here)
 
