@@ -7,10 +7,21 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - Lists fields in pdf
 - Flattens pdfs (Turns to an image)
 
+# Function Documentation
+
+    write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict)
+- input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+- output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
+- data_dict- dictionary that contains the fields to write to as your key and what to write to it as your value
+
+    data_dict = {'Address 1 Text Box': '500 West Main Street',
+    'Driving License Check Box': 'Yes',
+    'Language 1 Check Box': 'Off',}
+
 [Software Demo Video](http://youtube.link.goes.here)
 
 # Installation
-    pip install  
+    pip install fillpdf 
     conda install -c conda-forge poppler
 
 # Development Environment
