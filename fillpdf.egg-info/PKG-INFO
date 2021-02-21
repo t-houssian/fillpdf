@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: fillpdf
+Version: 0.0.1
+Summary: A Library to fill and flatten pdfs
+Home-page: https://github.com/t-houssian/fillpdf
+Author: Tyler Houssian
+Author-email: tylerhoussian@gmail.com
+License: UNKNOWN
+Description: # fillpdf
+        
+        This is a simple package to make filling pdfs much easier.
+        
+        - Fills pdfs
+        - Lists fields in pdf
+        - Flattens pdfs (Turns to an image)
+        
+        - requires manually install of poppler (conda install -c conda-forge poppler)
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

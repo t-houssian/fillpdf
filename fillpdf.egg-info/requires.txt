@@ -1,0 +1,4 @@
+pdfrw
+pdf2image
+Pillow
+PyPDF2
