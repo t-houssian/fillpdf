@@ -6,7 +6,7 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 
 - Fills pdfs
 - Lists fields in pdf
-- Flattens pdfs (Turns to an image)
+- Flattens pdfs (Turns to a non-editable pdf)
 
 # Function Documentation
 ##### get_form_fields
