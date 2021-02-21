@@ -9,7 +9,7 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - Flattens pdfs (Turns to an image)
 
 # Function Documentation
-#####
+##### write_fillable_pdf
     write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 - output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
