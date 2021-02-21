@@ -9,6 +9,8 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - Flattens pdfs (Turns to a non-editable pdf)
 
 # Function Documentation
+    import fillpdf
+    from fillpdf import fillpdfs
 ##### get_form_fields
     get_form_fields(input_pdf_path)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
