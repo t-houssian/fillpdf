@@ -54,7 +54,8 @@ def get_form_fields(input_pdf_path):
 def flatten_pdf(input_pdf_path, output_pdf_path):
     images = convert_from_path(input_pdf_path) 
     im1 = images[0]
-
+    images.pop(0)
+    
     pdf1_filename = output_pdf_path
 
     im1.save(pdf1_filename, "PDF" ,resolution=100.0, save_all=True, append_images=images)
