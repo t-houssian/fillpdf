@@ -50,6 +50,7 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - 'pdf2image'
 - 'Pillow'
 - 'PyPDF2'
+- 'poppler'
 
 # Useful Websites
 
