@@ -25,3 +25,6 @@ Dev.ipynb
 
 # pdfs
 *.pdf
+
+build
+dist
