@@ -18,10 +18,11 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
     fillpdfs.get_form_fields('blank.pdf')
     
 ##### write_fillable_pdf
-    write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict)
+    write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 - output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
 - data_dict- dictionary that contains the fields to write to as your key and what to write to it as your value (get this from the get_form_fields function)
+- flatten (default=False)- If True, then the fields will become uneditable when you write to the pdf.
 ###### For Example:
     data_dict = {'Address 1 Text Box': '500 West Main Street',
     'Driving License Check Box': 'Yes',
@@ -31,9 +32,12 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - For radio boxes ('Off' = not filled, 'Yes' = filled) 
 
 ##### flatten_pdf
-    flatten_pdf(input_pdf_path, output_pdf_path)
+    flatten_pdf(input_pdf_path, output_pdf_path, as_images=False)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 - output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
+- as_images=False- Default is False meaning it will update each individual annotation and set
+        it to False. True means it will convert to images and then reinsert into the
+        pdf. Try this if the first is not working. (this image technique requires poppler.)
 ###### For Example:
     fillpdfs.flatten_pdf('new.pdf', 'newflat.pdf')
 

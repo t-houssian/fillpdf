@@ -8,13 +8,17 @@ def _getFields(obj, tree=None, retval=None, fileobj=None):
     """
     Extracts field data if this PDF contains interactive form fields.
     The *tree* and *retval* parameters are for recursive use.
-
-    :param fileobj: A file object (usually a text file) to write
+    Parameters
+    ---------
+    fileobj: PdfFileReader.Object
+        A file object (usually a text file) to write
         a report to on all interactive form fields found.
-    :return: A dictionary where each key is a field name, and each
+    Returns
+    ---------
+    retval- dict, or ``None`` if form data could not be located.
+        A dictionary where each key is a field name, and each
         value is a :class:`Field<PyPDF2.generic.Field>` object. By
         default, the mapping name is used for keys.
-    :rtype: dict, or ``None`` if form data could not be located.
     """
     fieldAttributes = {'/FT': 'Field Type', '/Parent': 'Parent', '/T': 'Field Name', '/TU': 'Alternate Field Name',
                        '/TM': 'Mapping Name', '/Ff': 'Field Flags', '/V': 'Value', '/DV': 'Default Value'}
@@ -46,20 +50,58 @@ def _getFields(obj, tree=None, retval=None, fileobj=None):
 
 
 def get_form_fields(input_pdf_path):
+    """
+    Retrieves the form fields from a pdf to then be stored as a dictionary and
+    passed to the write_fillable_pdf() function. Uses PyPDF2.
+    Parameters
+    ---------
+    input_pdf_path: str
+        Path to the pdf you want the fields from.
+    Returns
+    ---------
+    """
     input_pdf_path = PdfFileReader(open(input_pdf_path, 'rb'))
     fields = _getFields(input_pdf_path)
     return dict(OrderedDict((k, v.get('/V', '')) for k, v in fields.items()))
 
 
-def flatten_pdf(input_pdf_path, output_pdf_path):
-    images = convert_from_path(input_pdf_path) 
-    im1 = images[0]
-    images.pop(0)
-    
-    pdf1_filename = output_pdf_path
+def flatten_pdf(input_pdf_path, output_pdf_path, as_images=False):
+    """
+    Flattens the pdf so each annotation becomes uneditable. This function provides
+    two ways to do so, either with the pdfrw function annotation.update(pdfrw.PdfDict(Ff=1))
+    or converting the pages to images then reinserting.
+    Parameters
+    ---------
+    input_pdf_path: str
+        Path to the pdf you want to flatten.
+    output_pdf_path: str
+        Path of the new pdf that is generated.
+    as_images: bool
+        Default is False meaning it will update each individual annotation and set
+        it to False. True means it will convert to images and then reinsert into the
+        pdf
+    Returns
+    ---------
+    """
+    if as_images = True:
+        images = convert_from_path(input_pdf_path) 
+        im1 = images[0]
+        images.pop(0)
 
-    im1.save(pdf1_filename, "PDF" ,resolution=100.0, save_all=True, append_images=images)
-    
+        pdf1_filename = output_pdf_path
+
+        im1.save(pdf1_filename, "PDF" ,resolution=100.0, save_all=True, append_images=images)
+    else:
+        ANNOT_KEY = '/Annots'               # key for all annotations within a page
+
+        template_pdf = pdfrw.PdfReader(input_pdf_path)
+        for Page in template_pdf.pages:
+            if Page[ANNOT_KEY]:
+                for annotation in Page[ANNOT_KEY]:
+                    annotation.update(pdfrw.PdfDict(Ff=1))
+        template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+        pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
+        
 
 def convert_dict_values_to_string(dictionary):
     """
@@ -91,7 +133,23 @@ def convert_dict_values_to_string(dictionary):
     
     
 def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False):
-
+    """
+    Writes the dictionary values to the pdf. Currently supports text and buttons.
+    Does so by updating each individual annotation with the contents of the dat_dict.
+    Parameters
+    ---------
+    input_pdf_path: str
+        Path to the pdf you want to flatten.
+    output_pdf_path: str
+        Path of the new pdf that is generated.
+    data_dict: dict
+        The data_dict returned from the function get_form_fields()
+    flatten: bool
+        Default is False meaning it will stay editable. True means the annotations
+        will be uneditable.
+    Returns
+    ---------
+    """
     data_dict = convert_dict_values_to_string(data_dict)
     
     ANNOT_KEY = '/Annots'               # key for all annotations within a page
