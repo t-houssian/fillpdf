@@ -50,6 +50,7 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - 'pdf2image'
 - 'Pillow'
 - 'PyPDF2'
+- 'poppler'
 
 # Useful Websites
 
@@ -67,3 +68,4 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 * Add perfect fill (sometimes does not fill random things ie. drop down lists)
 * give option to place text by coordinate
 * easier way to fill the data dictionary in write_fillable_pdf function
+* fill drop downs
