@@ -170,7 +170,6 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                 if target and annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
                     key = target[ANNOT_FIELD_KEY][1:-1] # Remove parentheses
                     if key in data_dict.keys():
-                        print(target[ANNOT_FORM_type])
                         if target[ANNOT_FORM_type] == ANNOT_FORM_button:
                             # button field i.e. a checkbox
                             target.update( pdfrw.PdfDict( V=pdfrw.PdfName(data_dict[key]) , AS=pdfrw.PdfName(data_dict[key]) ))
