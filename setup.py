@@ -13,7 +13,7 @@ install_requires = [
 setup(
     name='fillpdf',
     packages=find_packages(exclude=['tests']),
-    version='0.2.0',
+    version='0.2.1',
     install_requires=install_requires,
     description='A Library to fill and flatten pdfs',
     long_description=long_description,

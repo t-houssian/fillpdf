@@ -83,7 +83,7 @@ def flatten_pdf(input_pdf_path, output_pdf_path, as_images=False):
     Returns
     ---------
     """
-    if as_images = True:
+    if as_images == True:
         images = convert_from_path(input_pdf_path) 
         im1 = images[0]
         images.pop(0)
