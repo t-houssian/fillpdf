@@ -18,7 +18,7 @@ ANNOT_RECT_KEY = '/Rect'
 def get_form_fields(input_pdf_path):
     """
     Retrieves the form fields from a pdf to then be stored as a dictionary and
-    passed to the write_fillable_pdf() function. Uses PyPDF2.
+    passed to the write_fillable_pdf() function. Uses pdfrw.
     Parameters
     ---------
     input_pdf_path: str
