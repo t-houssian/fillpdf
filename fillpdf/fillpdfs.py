@@ -2,52 +2,18 @@ import pdfrw
 from pdf2image import convert_from_path # Needs conda install -c conda-forge poppler
 from PIL import Image
 from collections import OrderedDict
-from PyPDF2 import PdfFileWriter, PdfFileReader
 
-def _getFields(obj, tree=None, retval=None, fileobj=None):
-    """
-    Extracts field data if this PDF contains interactive form fields.
-    The *tree* and *retval* parameters are for recursive use.
-    Parameters
-    ---------
-    fileobj: PdfFileReader.Object
-        A file object (usually a text file) to write
-        a report to on all interactive form fields found.
-    Returns
-    ---------
-    retval- dict, or ``None`` if form data could not be located.
-        A dictionary where each key is a field name, and each
-        value is a :class:`Field<PyPDF2.generic.Field>` object. By
-        default, the mapping name is used for keys.
-    """
-    fieldAttributes = {'/FT': 'Field Type', '/Parent': 'Parent', '/T': 'Field Name', '/TU': 'Alternate Field Name',
-                       '/TM': 'Mapping Name', '/Ff': 'Field Flags', '/V': 'Value', '/DV': 'Default Value'}
-    if retval is None:
-        retval = OrderedDict()
-        catalog = obj.trailer["/Root"]
-        # get the AcroForm tree
-        if "/AcroForm" in catalog:
-            tree = catalog["/AcroForm"]
-        else:
-            return None
-    if tree is None:
-        return retval
-
-    obj._checkKids(tree, retval, fileobj)
-    for attr in fieldAttributes:
-        if attr in tree:
-            # Tree is a field
-            obj._buildField(tree, retval, fileobj, fieldAttributes)
-            break
-
-    if "/Fields" in tree:
-        fields = tree["/Fields"]
-        for f in fields:
-            field = f.getObject()
-            obj._buildField(field, retval, fileobj, fieldAttributes)
-
-    return retval
-
+ANNOT_KEY = '/Annots'               # key for all annotations within a page
+ANNOT_FIELD_KEY = '/T'              # Name of field. i.e. given ID of field
+ANNOT_FORM_type = '/FT'             # Form type (e.g. text/button)
+ANNOT_FORM_button = '/Btn'          # ID for buttons, i.e. a checkbox
+ANNOT_FORM_text = '/Tx'             # ID for textbox
+SUBTYPE_KEY = '/Subtype'
+WIDGET_SUBTYPE_KEY = '/Widget'
+ANNOT_FIELD_PARENT_KEY = '/Parent'  # Parent key for older pdf versions
+ANNOT_FIELD_KIDS_KEY = '/Kids'      # Kids key for older pdf versions
+ANNOT_VAL_KEY = '/V'
+ANNOT_RECT_KEY = '/Rect'
 
 def get_form_fields(input_pdf_path):
     """
@@ -60,9 +26,25 @@ def get_form_fields(input_pdf_path):
     Returns
     ---------
     """
-    input_pdf_path = PdfFileReader(open(input_pdf_path, 'rb'))
-    fields = _getFields(input_pdf_path)
-    return dict(OrderedDict((k, v.get('/V', '')) for k, v in fields.items()))
+    data_dict = {}
+
+    pdf = pdfrw.PdfReader(input_pdf_path)
+    for page in pdf.pages:
+        annotations = page[ANNOT_KEY]
+        for annotation in annotations:
+            if annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
+                if annotation[ANNOT_FIELD_KEY]:
+                    key = annotation[ANNOT_FIELD_KEY][1:-1]
+                    data_dict[key] = ''
+                    if annotation[ANNOT_VAL_KEY]:
+                        value = annotation[ANNOT_VAL_KEY]
+                        data_dict[key] = annotation[ANNOT_VAL_KEY]
+                        try:
+                            if type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfstring.PdfString:
+                                data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
+                        except:
+                            pass
+    print("{" + ",\n".join("{!r}: {!r}".format(k, v) for k, v in data_dict.items()) + "}")
 
 
 def flatten_pdf(input_pdf_path, output_pdf_path, as_images=False):
@@ -151,16 +133,6 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
     ---------
     """
     data_dict = convert_dict_values_to_string(data_dict)
-    
-    ANNOT_KEY = '/Annots'               # key for all annotations within a page
-    ANNOT_FIELD_KEY = '/T'              # Name of field. i.e. given ID of field
-    ANNOT_FORM_type = '/FT'             # Form type (e.g. text/button)
-    ANNOT_FORM_button = '/Btn'          # ID for buttons, i.e. a checkbox
-    ANNOT_FORM_text = '/Tx'             # ID for textbox
-    SUBTYPE_KEY = '/Subtype'
-    WIDGET_SUBTYPE_KEY = '/Widget'
-    ANNOT_FIELD_PARENT_KEY = '/Parent'  # Parent key for older pdf versions
-    ANNOT_FIELD_KIDS_KEY = '/Kids'      # Kids key for older pdf versions
 
     template_pdf = pdfrw.PdfReader(input_pdf_path)
     for Page in template_pdf.pages:

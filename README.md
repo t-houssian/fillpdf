@@ -53,18 +53,18 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - 'pdfrw'
 - 'pdf2image'
 - 'Pillow'
-- 'PyPDF2'
 - 'poppler'
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
+* [List PDF Fields pdfrw](https://github.com/pmaupin/pdfrw/issues/165)
 * [List PDF Fields](https://stackoverflow.com/questions/3984003/how-to-extract-pdf-fields-from-a-filled-out-form-in-python)
 * [Fill PDF Fields](https://stackoverflow.com/questions/60082481/how-to-edit-checkboxes-and-save-changes-in-an-editable-pdf-using-the-python-pdfr)
 * [Flatten PDFs](https://stackoverflow.com/questions/27023043/generate-flattened-pdf-with-python)
 
 # Credit
 - [dvska](https://stackoverflow.com/users/1303068/dvska)
+- [gbroiles](https://github.com/pmaupin/pdfrw/issues/165)
 - [tomatoeshift](https://stackoverflow.com/users/11998874/tomatoeshift)
 - [Tyler Houssian](https://stackoverflow.com/users/13537359/tyler-houssian)
 
