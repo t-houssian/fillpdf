@@ -31,19 +31,20 @@ def get_form_fields(input_pdf_path):
     pdf = pdfrw.PdfReader(input_pdf_path)
     for page in pdf.pages:
         annotations = page[ANNOT_KEY]
-        for annotation in annotations:
-            if annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
-                if annotation[ANNOT_FIELD_KEY]:
-                    key = annotation[ANNOT_FIELD_KEY][1:-1]
-                    data_dict[key] = ''
-                    if annotation[ANNOT_VAL_KEY]:
-                        value = annotation[ANNOT_VAL_KEY]
-                        data_dict[key] = annotation[ANNOT_VAL_KEY]
-                        try:
-                            if type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfstring.PdfString:
-                                data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
-                        except:
-                            pass
+        if annotations:
+            for annotation in annotations:
+                if annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
+                    if annotation[ANNOT_FIELD_KEY]:
+                        key = annotation[ANNOT_FIELD_KEY][1:-1]
+                        data_dict[key] = ''
+                        if annotation[ANNOT_VAL_KEY]:
+                            value = annotation[ANNOT_VAL_KEY]
+                            data_dict[key] = annotation[ANNOT_VAL_KEY]
+                            try:
+                                if type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfstring.PdfString:
+                                    data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
+                            except:
+                                pass
     print("{" + ",\n".join("{!r}: {!r}".format(k, v) for k, v in data_dict.items()) + "}")
 
 
