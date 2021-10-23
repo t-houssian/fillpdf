@@ -25,6 +25,7 @@ def get_form_fields(input_pdf_path):
         Path to the pdf you want the fields from.
     Returns
     ---------
+    A dictionary of form fields and their filled values.
     """
     data_dict = {}
 
@@ -45,8 +46,7 @@ def get_form_fields(input_pdf_path):
                                     data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
                             except:
                                 pass
-    print("{" + ",\n".join("{!r}: {!r}".format(k, v) for k, v in data_dict.items()) + "}")
-
+    return data_dict
 
 def flatten_pdf(input_pdf_path, output_pdf_path, as_images=False):
     """
