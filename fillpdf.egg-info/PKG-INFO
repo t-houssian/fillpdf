@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: fillpdf
-Version: 0.2.2
+Version: 0.3.2
 Summary: A Library to fill and flatten pdfs
 Home-page: https://github.com/t-houssian/fillpdf
 Author: Tyler Houssian
@@ -27,11 +27,17 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 # Function Documentation
     import fillpdf
     from fillpdf import fillpdfs
-##### get_form_fields
+##### get_form_fields (returns the data_dict)
     get_form_fields(input_pdf_path)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 ###### For Example:
     fillpdfs.get_form_fields('blank.pdf')
+
+##### print_form_fields (prints the data_dict)
+    print_form_fields(input_pdf_path)
+- input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+###### For Example:
+    fillpdfs.print_form_fields('blank.pdf')
     
 ##### write_fillable_pdf
     write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False)
@@ -69,18 +75,18 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 - 'pdfrw'
 - 'pdf2image'
 - 'Pillow'
-- 'PyPDF2'
 - 'poppler'
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
+* [List PDF Fields pdfrw](https://github.com/pmaupin/pdfrw/issues/165)
 * [List PDF Fields](https://stackoverflow.com/questions/3984003/how-to-extract-pdf-fields-from-a-filled-out-form-in-python)
 * [Fill PDF Fields](https://stackoverflow.com/questions/60082481/how-to-edit-checkboxes-and-save-changes-in-an-editable-pdf-using-the-python-pdfr)
 * [Flatten PDFs](https://stackoverflow.com/questions/27023043/generate-flattened-pdf-with-python)
 
 # Credit
 - [dvska](https://stackoverflow.com/users/1303068/dvska)
+- [gbroiles](https://github.com/pmaupin/pdfrw/issues/165)
 - [tomatoeshift](https://stackoverflow.com/users/11998874/tomatoeshift)
 - [Tyler Houssian](https://stackoverflow.com/users/13537359/tyler-houssian)
 

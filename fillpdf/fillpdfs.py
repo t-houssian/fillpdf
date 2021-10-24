@@ -48,6 +48,22 @@ def get_form_fields(input_pdf_path):
                                 pass
     return data_dict
 
+
+def print_form_fields(input_pdf_path):
+    """
+    Retrieves the form fields from get_form_fields(), then pretty prints
+    the data_dict. Uses pdfrw.
+    Parameters
+    ---------
+    input_pdf_path: str
+        Path to the pdf you want the fields from.
+    Returns
+    ---------
+    """
+    data_dict = get_form_fields(input_pdf_path)
+    print("{" + ",\n".join("{!r}: {!r}".format(k, v) for k, v in data_dict.items()) + "}")
+
+
 def flatten_pdf(input_pdf_path, output_pdf_path, as_images=False):
     """
     Flattens the pdf so each annotation becomes uneditable. This function provides

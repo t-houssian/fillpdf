@@ -11,11 +11,17 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
 # Function Documentation
     import fillpdf
     from fillpdf import fillpdfs
-##### get_form_fields
+##### get_form_fields (returns the data_dict)
     get_form_fields(input_pdf_path)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 ###### For Example:
     fillpdfs.get_form_fields('blank.pdf')
+
+##### print_form_fields (prints the data_dict)
+    print_form_fields(input_pdf_path)
+- input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+###### For Example:
+    fillpdfs.print_form_fields('blank.pdf')
     
 ##### write_fillable_pdf
     write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False)
