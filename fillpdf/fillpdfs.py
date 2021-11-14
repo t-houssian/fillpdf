@@ -6,8 +6,12 @@ from collections import OrderedDict
 ANNOT_KEY = '/Annots'               # key for all annotations within a page
 ANNOT_FIELD_KEY = '/T'              # Name of field. i.e. given ID of field
 ANNOT_FORM_type = '/FT'             # Form type (e.g. text/button)
+ANNOT_FORM_settings = '/Ff'
 ANNOT_FORM_button = '/Btn'          # ID for buttons, i.e. a checkbox
 ANNOT_FORM_text = '/Tx'             # ID for textbox
+ANNOT_FORM_combo = '/Ch'            # ID for combobox, i.e. a dropdown-menu
+ANNOT_FORM_combo_options = '/Opt'   # Options of a combobox
+ANNOT_FORM_free_text_input = 262144 # Bit for free text entry in dropdown-menus
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 ANNOT_FIELD_PARENT_KEY = '/Parent'  # Parent key for older pdf versions
@@ -169,6 +173,24 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                             target.update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )
                             if target[ANNOT_FIELD_KIDS_KEY]:
                                 target[ANNOT_FIELD_KIDS_KEY][0].update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )
+                        elif target[ANNOT_FORM_type] == ANNOT_FORM_combo:
+                            # combobox i.e. a dropdown-menu
+                            # get options from dropdown list and decode to string
+                            options = [t.decode() for t in target[ANNOT_FORM_combo_options]]
+                            # if data_dict[key] is an integer, get the n-th option and store it instead. If index is out of bounds, cast to string
+                            # this way it is also possible to choose a specific option instead of a text
+                            try:
+                                data_dict[key] = int(data_dict[key])
+                            except Exception as e:
+                                pass
+                            if isinstance(data_dict[key], int):
+                                data_dict[key] = options[data_dict[key]] if (data_dict[key] < len(options) and data_dict[key] >= 0) else str(data_dict[key])
+                            option_index = options.index(data_dict[key]) if data_dict[key] in options else None
+                            # if free text input is enabled OR free text input is disabled but data_dict[key] is in options
+                            if (int(target[ANNOT_FORM_settings]) & ANNOT_FORM_free_text_input) or (not (int(target[ANNOT_FORM_settings]) & ANNOT_FORM_free_text_input) and option_index):
+                                target.update( pdfrw.PdfDict( V=data_dict[key], I=option_index ))
+                                if target[ANNOT_FIELD_KIDS_KEY]:
+                                    target[ANNOT_FIELD_KIDS_KEY][0].update( pdfrw.PdfDict( V=data_dict[key], I=option_index ))
                 if flatten == True:
                     annotation.update(pdfrw.PdfDict(Ff=1))
     template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
