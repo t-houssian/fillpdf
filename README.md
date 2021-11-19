@@ -72,6 +72,7 @@ A command line wrapper is available for this tool. Here are the two commands:
 ###### Help Command
     extractfillpdf --help or extractfillpdf -h
 Will bring up this menu
+
     positional arguments:
       test.pdf              Input pdf file
 
@@ -83,7 +84,9 @@ Will bring up this menu
       --version             show program's version number and exit
       -v, --verbose         set loglevel to INFO
       -vv, --very-verbose   set loglevel to DEBUG
-        insertfillpdf --help or insertfillpdf -h
+      
+###### Or:
+    insertfillpdf --help or insertfillpdf -h
 Will bring up this menu
 
     positional arguments:
