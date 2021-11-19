@@ -51,7 +51,7 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
     fillpdfs.flatten_pdf('new.pdf', 'newflat.pdf')
     
 # Command Line Use
-    A command line wrapper is available for this tool. Here are the two commands:
+A command line wrapper is available for this tool. Here are the two commands:
 ##### extractfillpdf
     extractfillpdf input_pdf_path
     or
@@ -63,12 +63,12 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
     or
     extractfillpdf blank.pdf data.json
 ##### insertfillpdf
-    insertfillpdf -j blank.json -o new.pdf blank.pdf
+    insertfillpdf -j input_json_path -o output_pdf_path input_pdf_path
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 - input_json_path- path to the json file that you generated and modified with the extractfillpdf command. 
 - output_pdf_path- path of where you want your pdf to write to (including the pdf name could just leave as 'new.pdf' to write to current directory)
 ###### For Example:
-    fillpdfs.flatten_pdf('new.pdf', 'newflat.pdf')
+    insertfillpdf -j blank.json -o new.pdf blank.pdf
 ###### Help Command
     extractfillpdf --help or extractfillpdf -h
 Will bring up this menu
@@ -127,9 +127,9 @@ Will bring up this menu
 - [gbroiles](https://github.com/pmaupin/pdfrw/issues/165)
 - [tomatoeshift](https://stackoverflow.com/users/11998874/tomatoeshift)
 - [Tyler Houssian](https://stackoverflow.com/users/13537359/tyler-houssian)
+- [jtplaarj](https://github.com/jtplaarj)
+- [WestHealth](https://github.com/WestHealth/pdf-form-filler)
 
 # Future Work
-* Add perfect fill (sometimes does not fill random things ie. drop down lists)
 * give option to place text by coordinate
-* easier way to fill the data dictionary in write_fillable_pdf function
-* fill drop downs
+* alter or view pdf versions
