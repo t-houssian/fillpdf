@@ -3,9 +3,12 @@ README.md
 setup.cfg
 setup.py
 fillpdf/__init__.py
+fillpdf/extractfillpdf.py
 fillpdf/fillpdfs.py
+fillpdf/insertfillpdf.py
 fillpdf.egg-info/PKG-INFO
 fillpdf.egg-info/SOURCES.txt
 fillpdf.egg-info/dependency_links.txt
+fillpdf.egg-info/entry_points.txt
 fillpdf.egg-info/requires.txt
 fillpdf.egg-info/top_level.txt
