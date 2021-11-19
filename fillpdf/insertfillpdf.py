@@ -1,0 +1,201 @@
+# -*- coding: utf-8 -*-
+"""
+This command inserts the fields from a JSON and data from a fillable PDF.
+
+It is, basically, a wrapper around the fillpdf library.
+
+Note:
+
+References:
+"""
+
+import argparse
+import json
+import logging
+import sys
+from typing import List
+
+from fillpdf import fillpdfs, __version__
+
+
+_logger = logging.getLogger(__name__)
+
+
+# ---- Python API ----
+# The functions defined in this section can be imported by users in their
+# Python scripts/interactive interpreter
+
+
+def insertfillpdf(
+    input_pdf_file: str, input_json_file: str, output_pdf_file: str
+) -> int:
+    """ "Insert data from json file
+
+    Args:
+        input_pdf_file (str): Input PDF file
+        input_json_file (str): Input PDF file
+        output_pdf_file (str): Output PDF file
+
+    Returns:
+        int: number of records
+    """
+
+    # read dict from JSON file
+    with open(input_json_file) as json_file:
+        dict_data = json.load(json_file)
+
+    # check if dict is not empty
+    if dict:
+        _logger.debug("Write data: {}".format(dict))
+        # write pdf file
+        fillpdfs.write_fillable_pdf(input_pdf_file, output_pdf_file, dict_data)
+    else:
+        _logger.error("No data found")
+        print("No data found")
+
+    return len(dict_data)
+
+
+# ---- CLI ----
+# The functions defined in this section are wrappers around the main Python
+# API allowing them to be called directly from the terminal as a CLI
+# executable/script.
+
+
+def parse_args(args: List[str]) -> argparse.Namespace:
+    """Parse command line parameters
+
+    Args:
+        args (List[str]): command line parameters as list of strings
+                          (for example  ``["--help"]``).
+
+    Returns:
+        :obj:`argparse.Namespace`: command line parameters namespace
+    """
+    parser = argparse.ArgumentParser(description="Extract fill data from PDF")
+    parser.add_argument(
+        dest="input_PDF_file",
+        help="Input PDF file",
+        type=str,
+        metavar="test.pdf",
+    )
+    parser.add_argument(
+        "-j",
+        "--JSON",
+        dest="input_json_file",
+        help="Input JSON file, if none given,  it will be the input file with \
+            the JSON extension",
+        type=str,
+        metavar="test.json",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        dest="output_PDF_file",
+        help="Output file to write result, if none given, it will be the input file with \
+            '_out.pdf' extension'",
+        type=str,
+        metavar="test_out.pdf",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="insertfillpdf {ver}".format(ver=__version__),
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        dest="loglevel",
+        help="set loglevel to INFO",
+        action="store_const",
+        const=logging.INFO,
+    )
+    parser.add_argument(
+        "-vv",
+        "--very-verbose",
+        dest="loglevel",
+        help="set loglevel to DEBUG",
+        action="store_const",
+        const=logging.DEBUG,
+    )
+    return parser.parse_args(args)
+
+
+def setup_logging(loglevel: int):
+    """Setup basic logging
+
+    Args:
+        loglevel (int): minimum loglevel for emitting messages
+    """
+
+    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
+    logging.basicConfig(
+        level=loglevel, stream=sys.stdout, format=logformat, datefmt="%Y-%m-%d %H:%M:%S"
+    )
+
+
+def main(args_m: List[str]):
+    """Wrapper allowing :func:`extractfillpdf` to be called with string arguments
+    in a CLI fashion
+
+    Instead of returning the value from :func:`extractfillpdf`, it prints the result
+    to the ``stdout`` in a nicely formatted message.
+
+    Args:
+        args_m (List[str]): command line parameters as list of strings
+                            (for example  ``["--verbose", "42"]``).
+    """
+    args = parse_args(args_m)
+    setup_logging(args.loglevel)
+
+    # check if JSON is given, if not, use inputfile with JSON extension
+    if args.input_json_file:
+        pass
+    else:
+        # remove pdf extension and add json extension
+        args.input_json_file = args.input_PDF_file.replace(".pdf", ".json")
+        _logger.debug("Output file name created: {}".format(args.output_PDF_file))
+
+    # check if output is given, if not, use inputfile with _out extension
+    if args.output_PDF_file:
+        pass
+    else:
+        # remove pdf extension and add _out.pdf extension
+        args.output_PDF_file = args.input_PDF_file.replace(".pdf", "_out.pdf")
+        _logger.debug("Output file name created: {}".format(args.output_PDF_file))
+
+    # trim spaces
+    args.output_PDF_file = args.output_PDF_file.strip()
+    args.input_json_file = args.input_json_file.strip()
+
+    num_records = insertfillpdf(
+        args.input_PDF_file, args.input_json_file, args.output_PDF_file
+    )
+    print(
+        "{} records have been proccesed from {} to {}".format(
+            num_records, args.input_PDF_file, args.output_PDF_file
+        )
+    )
+    _logger.info("Script ends here")
+
+
+def run():
+    """Calls :func:`main` passing the CLI arguments extracted from :obj:`sys.argv`
+
+    This function can be used as entry point to create console scripts with setuptools.
+    """
+    main(sys.argv[1:])
+
+
+if __name__ == "__main__":
+    # ^  This is a guard statement that will prevent the following code from
+    #    being executed in the case someone imports this file instead of
+    #    executing it as a script.
+    #    https://docs.python.org/3/library/__main__.html
+
+    # After installing your project with pip, users can also run your Python
+    # modules as scripts via the ``-m`` flag, as defined in PEP 338::
+    #
+    #     python -m fillpdf.insertfillpdf test.pdf
+    #
+    run()
