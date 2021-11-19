@@ -46,6 +46,9 @@ def get_form_fields(input_pdf_path):
                             try:
                                 if type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfstring.PdfString:
                                     data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
+                                elif type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfname.BasePdfName:
+                                    if '/' in annotation[ANNOT_VAL_KEY]:
+                                        data_dict[key] = annotation[ANNOT_VAL_KEY][1:]
                             except:
                                 pass
                     elif annotation['/AP']:
