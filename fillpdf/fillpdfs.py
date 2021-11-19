@@ -8,6 +8,8 @@ ANNOT_FIELD_KEY = '/T'              # Name of field. i.e. given ID of field
 ANNOT_FORM_type = '/FT'             # Form type (e.g. text/button)
 ANNOT_FORM_button = '/Btn'          # ID for buttons, i.e. a checkbox
 ANNOT_FORM_text = '/Tx'             # ID for textbox
+ANNOT_FORM_options = '/Opt'
+ANNOT_FORM_combo = '/Ch'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 ANNOT_FIELD_PARENT_KEY = '/Parent'  # Parent key for older pdf versions
@@ -46,6 +48,19 @@ def get_form_fields(input_pdf_path):
                                     data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
                             except:
                                 pass
+                    elif annotation['/AP']:
+                        if not annotation['/T']:
+                            annotation = annotation['/Parent']
+                        key = annotation['/T'].to_unicode()
+                        data_dict[key] = annotation[ANNOT_VAL_KEY]
+                        try:
+                            if type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfstring.PdfString:
+                                data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
+                            elif type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfname.BasePdfName:
+                                if '/' in annotation[ANNOT_VAL_KEY]:
+                                    data_dict[key] = annotation[ANNOT_VAL_KEY][1:]
+                        except:
+                            pass
     return data_dict
 
 
@@ -122,7 +137,7 @@ def convert_dict_values_to_string(dictionary):
 
         # checking data types
         if isinstance(dictionary[sub], list):
-            res[sub] = list_delim.join([str(ele) for ele in dictionary[sub]])
+            res[sub] = dictionary[sub]
         elif isinstance(dictionary[sub], tuple):
             res[sub] = tuple_delim.join(list([str(ele) for ele in dictionary[sub]]))
         else:
@@ -156,14 +171,81 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
         if Page[ANNOT_KEY]:
             for annotation in Page[ANNOT_KEY]:
                 target = annotation if annotation[ANNOT_FIELD_KEY] else annotation[ANNOT_FIELD_PARENT_KEY]
+                if annotation[ANNOT_FORM_type] == None:
+                    pass
                 if target and annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
                     key = target[ANNOT_FIELD_KEY][1:-1] # Remove parentheses
                     if key in data_dict.keys():
+                        print(target[ANNOT_FORM_type])
                         if target[ANNOT_FORM_type] == ANNOT_FORM_button:
-                            # button field i.e. a checkbox
-                            target.update( pdfrw.PdfDict( V=pdfrw.PdfName(data_dict[key]) , AS=pdfrw.PdfName(data_dict[key]) ))
-                            if target[ANNOT_FIELD_KIDS_KEY]:
-                                target[ANNOT_FIELD_KIDS_KEY][0].update( pdfrw.PdfDict( V=pdfrw.PdfName(data_dict[key]) , AS=pdfrw.PdfName(data_dict[key]) ))
+                            # button field i.e. a radiobuttons
+                            if not annotation['/T']:
+                                if annotation['/AP']:
+                                    keys = annotation['/AP']['/N'].keys()
+                                    if keys[0]:
+                                        if keys[0][0] == '/':
+                                            keys[0] = str(keys[0][1:])
+                                    list_delim, tuple_delim = '-', '^'
+                                    res = dict()
+                                    for sub in data_dict:
+                                        if isinstance(data_dict[sub], list):
+                                            res[sub] = list_delim.join([str(ele) for ele in data_dict[sub]]) 
+                                        else:
+                                            res[sub] = str(data_dict[sub])
+                                    temp_dict = res
+                                    annotation = annotation['/Parent']
+                                    options = []
+                                    for each in annotation['/Kids']:
+                                        keys2 = each['/AP']['/N'].keys()
+                                        if ['/Off'] in keys:
+                                            keys2.remove('/Off')
+                                        export = keys2[0]
+                                        if '/' in export:
+                                            options.append(export[1:])
+                                        else:
+                                            options.append(export)
+                                        if f'/{data_dict[key]}' == export:
+                                            val_str = pdfrw.objects.pdfname.BasePdfName(f'/{data_dict[key]}')
+                                        else:
+                                            val_str = pdfrw.objects.pdfname.BasePdfName(f'/Off')
+                                        if set(keys).intersection(set(temp_dict.values())):
+                                            each.update(pdfrw.PdfDict(AS=val_str))
+                                    if data_dict[key] not in options:
+                                        raise KeyError(f"{data_dict[key]} Not An Option, Options are {options}")
+                                    else:
+                                        if set(keys).intersection(set(temp_dict.values())):
+                                            annotation.update(pdfrw.PdfDict(V=pdfrw.objects.pdfname.BasePdfName(f'/{data_dict[key]}')))
+                            else:
+                                # button field i.e. a checkbox
+                                target.update( pdfrw.PdfDict( V=pdfrw.PdfName(data_dict[key]) , AS=pdfrw.PdfName(data_dict[key]) ))
+                                if target[ANNOT_FIELD_KIDS_KEY]:
+                                    target[ANNOT_FIELD_KIDS_KEY][0].update( pdfrw.PdfDict( V=pdfrw.PdfName(data_dict[key]) , AS=pdfrw.PdfName(data_dict[key]) ))
+                        elif target[ANNOT_FORM_type] == ANNOT_FORM_combo:
+                            # Drop Down Combo Box
+                            export = None
+                            options = annotation[ANNOT_FORM_options]
+                            if len(options) > 0:
+                                if type(options[0]) == pdfrw.objects.pdfarray.PdfArray:
+                                    options = list(options)
+                                    options = [pdfrw.objects.pdfstring.PdfString.decode(x[0]) for x in options]
+                                if type(options[0]) == pdfrw.objects.pdfstring.PdfString:
+                                    options = [pdfrw.objects.pdfstring.PdfString.decode(x) for x in options]
+                            if type(data_dict[key]) == list:
+                                export = []
+                                for each in options:
+                                    if each in data_dict[key]:
+                                        export.append(pdfrw.objects.pdfstring.PdfString.encode(each))
+                                if export is None:
+                                    raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
+                                pdfstr = pdfrw.objects.pdfarray.PdfArray(export)
+                            else:
+                                for each in options:
+                                    if each == data_dict[key]:
+                                        export = each
+                                if export is None:
+                                    raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
+                                pdfstr = pdfrw.objects.pdfstring.PdfString.encode(data_dict[key])
+                            annotation.update(pdfrw.PdfDict(V=pdfstr, AS=pdfstr))
                         elif target[ANNOT_FORM_type] == ANNOT_FORM_text:
                             # regular text field
                             target.update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )

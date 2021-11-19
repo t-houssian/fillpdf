@@ -28,3 +28,6 @@ Dev.ipynb
 
 build
 dist
+basic-data.json
+fillpdf/.ipynb_checkpoints/fillpdfs-checkpoint.py
+fillpdf/__pycache__/fillpdfs.cpython-38.pyc
