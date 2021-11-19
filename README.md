@@ -110,6 +110,7 @@ Will bring up this menu
 # Installation
     pip install fillpdf 
     conda install -c conda-forge poppler
+poppler is only needed if you are using the as_images=True mode of the `flattenpdf` function
 
 # Development Environment
 ##### Builds upon
