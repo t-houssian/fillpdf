@@ -55,13 +55,13 @@ A command line wrapper is available for this tool. Here are the two commands:
 ##### extractfillpdf
     extractfillpdf input_pdf_path
     or
-    extractfillpdf input_pdf_path output_json_path
+    extractfillpdf input_pdf_path -o output_json_path
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
 - output_json_path- path of where you want your json file containing the fields and contents of the pdf to write to (If not included then the default will be the same name/path as the input_pdf_path but .json instead of .pdf)
 ###### For Example:
     extractfillpdf blank.pdf
     or
-    extractfillpdf blank.pdf data.json
+    extractfillpdf blank.pdf -o data.json
 ##### insertfillpdf
     insertfillpdf -j input_json_path -o output_pdf_path input_pdf_path
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
