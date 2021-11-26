@@ -213,7 +213,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                         if set(keys).intersection(set(temp_dict.values())):
                                             each.update(pdfrw.PdfDict(AS=val_str))
                                     if data_dict[key] not in options:
-                                        if data_dict[key] != "None":
+                                        if data_dict[key] != "None"  and data_dict[key] != "":
                                             raise KeyError(f"{data_dict[key]} Not An Option, Options are {options}")
                                     else:
                                         if set(keys).intersection(set(temp_dict.values())):
@@ -239,7 +239,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                     if each in data_dict[key]:
                                         export.append(pdfrw.objects.pdfstring.PdfString.encode(each))
                                 if export is None:
-                                    if data_dict[key] != "None":
+                                    if data_dict[key] != "None"  and data_dict[key] != "":
                                         raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
                                 pdfstr = pdfrw.objects.pdfarray.PdfArray(export)
                             else:
@@ -247,7 +247,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                     if each == data_dict[key]:
                                         export = each
                                 if export is None:
-                                    if data_dict[key] != "None":
+                                    if data_dict[key] != "None" and data_dict[key] != "":
                                         raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
                                 pdfstr = pdfrw.objects.pdfstring.PdfString.encode(data_dict[key])
                             annotation.update(pdfrw.PdfDict(V=pdfstr, AS=pdfstr))

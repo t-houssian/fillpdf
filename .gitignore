@@ -168,3 +168,4 @@ dmypy.json
 cython_debug/
 basic-data.json
 new_samp.json
+CheckVersions.ipynb

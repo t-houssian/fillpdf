@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 install_requires = [
-    'pdfrw',
+    'pdfrw2',
     'pdf2image',
     'Pillow',
     ]
@@ -12,7 +12,7 @@ install_requires = [
 setup(
     name='fillpdf',
     packages=find_packages(exclude=['tests']),
-    version='0.4.2',
+    version='0.5.6',
     install_requires=install_requires,
     description='A Library to fill and flatten pdfs',
     long_description=long_description,

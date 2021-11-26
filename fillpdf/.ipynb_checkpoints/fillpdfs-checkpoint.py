@@ -46,6 +46,9 @@ def get_form_fields(input_pdf_path):
                             try:
                                 if type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfstring.PdfString:
                                     data_dict[key] = pdfrw.objects.PdfString.decode(annotation[ANNOT_VAL_KEY])
+                                elif type(annotation[ANNOT_VAL_KEY]) == pdfrw.objects.pdfname.BasePdfName:
+                                    if '/' in annotation[ANNOT_VAL_KEY]:
+                                        data_dict[key] = annotation[ANNOT_VAL_KEY][1:]
                             except:
                                 pass
                     elif annotation['/AP']:
@@ -176,7 +179,6 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                 if target and annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
                     key = target[ANNOT_FIELD_KEY][1:-1] # Remove parentheses
                     if key in data_dict.keys():
-                        print(target[ANNOT_FORM_type])
                         if target[ANNOT_FORM_type] == ANNOT_FORM_button:
                             # button field i.e. a radiobuttons
                             if not annotation['/T']:
@@ -211,7 +213,8 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                         if set(keys).intersection(set(temp_dict.values())):
                                             each.update(pdfrw.PdfDict(AS=val_str))
                                     if data_dict[key] not in options:
-                                        raise KeyError(f"{data_dict[key]} Not An Option, Options are {options}")
+                                        if data_dict[key] != "None"  and data_dict[key] != "":
+                                            raise KeyError(f"{data_dict[key]} Not An Option, Options are {options}")
                                     else:
                                         if set(keys).intersection(set(temp_dict.values())):
                                             annotation.update(pdfrw.PdfDict(V=pdfrw.objects.pdfname.BasePdfName(f'/{data_dict[key]}')))
@@ -236,14 +239,16 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                     if each in data_dict[key]:
                                         export.append(pdfrw.objects.pdfstring.PdfString.encode(each))
                                 if export is None:
-                                    raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
+                                    if data_dict[key] != "None"  and data_dict[key] != "":
+                                        raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
                                 pdfstr = pdfrw.objects.pdfarray.PdfArray(export)
                             else:
                                 for each in options:
                                     if each == data_dict[key]:
                                         export = each
                                 if export is None:
-                                    raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
+                                    if data_dict[key] != "None" and data_dict[key] != "":
+                                        raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
                                 pdfstr = pdfrw.objects.pdfstring.PdfString.encode(data_dict[key])
                             annotation.update(pdfrw.PdfDict(V=pdfstr, AS=pdfstr))
                         elif target[ANNOT_FORM_type] == ANNOT_FORM_text:
