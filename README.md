@@ -125,6 +125,7 @@ poppler is only needed if you are using the as_images=True mode of the `flattenp
 * [List PDF Fields](https://stackoverflow.com/questions/3984003/how-to-extract-pdf-fields-from-a-filled-out-form-in-python)
 * [Fill PDF Fields](https://stackoverflow.com/questions/60082481/how-to-edit-checkboxes-and-save-changes-in-an-editable-pdf-using-the-python-pdfr)
 * [Flatten PDFs](https://stackoverflow.com/questions/27023043/generate-flattened-pdf-with-python)
+* [pdfrw2](https://pypi.org/project/pdfrw2/)
 
 # Credit
 - [dvska](https://stackoverflow.com/users/1303068/dvska)
@@ -133,6 +134,8 @@ poppler is only needed if you are using the as_images=True mode of the `flattenp
 - [Tyler Houssian](https://stackoverflow.com/users/13537359/tyler-houssian)
 - [jtplaarj](https://github.com/jtplaarj)
 - [WestHealth](https://github.com/WestHealth/pdf-form-filler)
+- [sarnold](https://github.com/sarnold)
+- [Patrick Maupin](https://github.com/pmaupin)
 
 # Future Work
 * give option to place text by coordinate
