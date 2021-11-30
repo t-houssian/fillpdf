@@ -12,14 +12,18 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
     import fillpdf
     from fillpdf import fillpdfs
 ##### get_form_fields (returns the data_dict)
-    get_form_fields(input_pdf_path)
+    get_form_fields(input_pdf_path, sort=False, page_number=None)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+- sort- sorts the dictionary alphabetically if True, retains the normal pdf order if false
+- page_number- (int) pass the page number you want the values from if you are just needing a single pages values or if you want to find which page a key belongs to
 ###### For Example:
     fillpdfs.get_form_fields('blank.pdf')
 
 ##### print_form_fields (prints the data_dict)
-    print_form_fields(input_pdf_path)
+    print_form_fields(input_pdf_path, sort=False, page_number=None)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+- sort (default = False) - sorts the dictionary alphabetically if True, retains the normal pdf order if false
+- page_number- (int) pass the page number you want the values from if you are just needing a single pages values or if you want to find which page a key belongs to. The number passed must be within the page range.
 ###### For Example:
     fillpdfs.print_form_fields('blank.pdf')
     
