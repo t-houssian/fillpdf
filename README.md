@@ -80,7 +80,7 @@ This project primarily builds upon a forked version of pdfrw called [pdfrw2](htt
 - height- The height of the image
 - font_size- Size of the text being inserted.
 - font_name- The name of the font type you are using.
-        https://github.com/t-houssian/fillpdf/blob/main/README.md#fonts
+        [List of available fonts below](https://github.com/t-houssian/fillpdf/blob/main/README.md#fonts-for-place-functions)
 - fill_color- The color to use (0,0,0) = white, (1,1,1) = black
 - font_color- The color to use (0,0,0) = white, (1,1,1) = black
 ###### For Example:
