@@ -7,12 +7,13 @@ install_requires = [
     'pdfrw2',
     'pdf2image',
     'Pillow',
+    'pymupdf'
     ]
 
 setup(
     name='fillpdf',
     packages=find_packages(exclude=['tests']),
-    version='0.5.6',
+    version='0.7.0',
     install_requires=install_requires,
     description='A Library to fill and flatten pdfs',
     long_description=long_description,
