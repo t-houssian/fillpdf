@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: fillpdf
-Version: 0.7.0
+Version: 0.7.1
 Summary: A Library to fill and flatten pdfs
 Home-page: https://github.com/t-houssian/fillpdf
 Author: Tyler Houssian
@@ -20,22 +20,31 @@ https://pypi.org/project/fillpdf/
 # Overview
 This is a simple package to make filling pdfs much easier. I have delt with a lot projects that involve manipulating pdfs in python. I found no easy solution for writting, or flattening pdfs, so I decided to make a library to make this task much easier. As a young software engineer I kept this library really simple but practicle and am open to any input for the future!
 
+This project primarily builds upon a forked version of pdfrw called [pdfrw2](https://pypi.org/project/pdfrw2/).
+
 - Fills pdfs
 - Lists fields in pdf
-- Flattens pdfs (Turns to a non-editable pdf)
+- Flattens pdfs (Turns to a non-editable pdf)\
+- Inserts Images and Text
+- Rotate PDFs
+- Place Images
 
 # Function Documentation
     import fillpdf
     from fillpdf import fillpdfs
 ##### get_form_fields (returns the data_dict)
-    get_form_fields(input_pdf_path)
+    get_form_fields(input_pdf_path, sort=False, page_number=None)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+- sort- sorts the dictionary alphabetically if True, retains the normal pdf order if false
+- page_number- (int) pass the page number you want the values from if you are just needing a single pages values or if you want to find which page a key belongs to
 ###### For Example:
     fillpdfs.get_form_fields('blank.pdf')
 
 ##### print_form_fields (prints the data_dict)
-    print_form_fields(input_pdf_path)
+    print_form_fields(input_pdf_path, sort=False, page_number=None)
 - input_pdf_path- path to your pdf you want to alter (including the pdf name could just leave as 'blank.pdf' if the pdf is in your current directory)
+- sort (default = False) - sorts the dictionary alphabetically if True, retains the normal pdf order if false
+- page_number- (int) pass the page number you want the values from if you are just needing a single pages values or if you want to find which page a key belongs to. The number passed must be within the page range.
 ###### For Example:
     fillpdfs.print_form_fields('blank.pdf')
     
@@ -65,7 +74,136 @@ This is a simple package to make filling pdfs much easier. I have delt with a lo
         pdf. Try this if the first is not working. (this image technique requires poppler.)
 ###### For Example:
     fillpdfs.flatten_pdf('new.pdf', 'newflat.pdf')
+
+##### rotate_page
+    rotate_page(deg, input_pdf_path, output_map_path, page_number)
+- deg- float The x coordinate of the top left corner of the text.
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+###### For Example:
+    fillpdfs.rotate_page(90, 'new.pdf', 'template-3.pdf', 1)
+
+##### place_radiobutton
+    place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0)
+- field_name- The name you want attatched to the field
+- x- The x coordinate of the top left corner of the text.
+- y- The y coordinate of the top right corner of the text.
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+- width- The width of the image
+- height- The height of the image
+- font_size- Size of the text being inserted.
+- font_name- The name of the font type you are using.
+        [List of available fonts below](https://github.com/t-houssian/fillpdf/blob/main/README.md#fonts-for-place-functions)
+- fill_color- The color to use (0,0,0) = white, (1,1,1) = black
+- font_color- The color to use (0,0,0) = white, (1,1,1) = black
+###### For Example:
+    fillpdfs.place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0))
     
+##### place_dropdown
+    place_dropdown(field_name, values, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0))
+- field_name- The name you want attatched to the field
+- values- The values for the dropdown menu. The first value becomes the default.
+- x- The x coordinate of the top left corner of the text.
+- y- The y coordinate of the top right corner of the text.
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+- width- The width of the image
+- height- The height of the image
+- font_size- Size of the text being inserted.
+- font_name- The name of the font type you are using.
+        https://github.com/t-houssian/fillpdf/blob/main/README.md#fonts
+- fill_color- The color to use (0,0,0) = white, (1,1,1) = black
+- font_color- The color to use (0,0,0) = white, (1,1,1) = black
+###### For Example
+    fillpdfs.place_dropdown('dropField-1', ("Frankfurt", "Hamburg", "Stuttgart", "Hannover", "Berlin", "München", "Köln", "Potsdam",), 0, 0, 'sample_pdf.pdf', 'template-3.pdf', 1, width=100, height=20, font_size=16)
+    
+##### place_text_box
+    place_text_box(field_name, prefilled_text, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0)):
+- field_name- The name you want attatched to the field
+- prefilled_text- The text you want prefilled in this widget
+- x- The x coordinate of the top left corner of the text.
+- y- The y coordinate of the top right corner of the text.
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+- width- The width of the image
+- height- The height of the image
+- font_size- Size of the text being inserted.
+- font_name- The name of the font type you are using.
+        https://github.com/t-houssian/fillpdf/blob/main/README.md#fonts
+- fill_color- The color to use (0,0,0) = white, (1,1,1) = black
+- font_color- The color to use (0,0,0) = white, (1,1,1) = black
+###### For Example
+    fillpdfs.place_text_box('form text', 'textfield-1', 0, 0, 'sample_pdf.pdf', 'template-3.pdf', 1, width=100, height=20, font_size=16)
+
+##### place_image
+    place_image(file_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10)
+- file_name- The path of the file to be placed in the image
+- x- The x coordinate of the top left corner of the text.
+- y- The y coordinate of the top right corner of the text.
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+- width- The width of the image
+- height- The height of the image
+###### For Example
+    fillpdfs.place_image('mush.png', 50, 50, 'template-2.pdf', 'template-3.pdf', 1, width=200, height=200)
+
+##### place_text
+    place_text(text, x, y, input_pdf_path, output_map_path, page_number, font_size=12, font_name="helv", color=None)
+- text- The string you want to be place in the document
+- x- The x coordinate of the top left corner of the text.
+- y- The y coordinate of the top right corner of the text.
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+- width- The width of the image
+- height- The height of the image
+###### For Example
+    fillpdfs.place_text('Yo', 50, 50, 'template-2.pdf', 'template-3.pdf', 1)
+
+##### get_coordinate_map
+    get_coordinate_map(input_pdf_path, output_map_path, page_number=1):
+- input_pdf_path- Path to the pdf you want the fields from.
+- output_map_path- Path of the new pdf that is generated.
+- page_number- Number of the page to get the map of.
+###### For Example:
+    fillpdfs.get_coordinate_map('template.pdf', 'template-2.pdf')
+
+###### Fonts (For place functions)
+    {'courier': 'Courier',
+    'courier-oblique': 'Courier-Oblique',
+    'courier-bold': 'Courier-Bold',
+    'courier-boldoblique': 'Courier-BoldOblique',
+    'helvetica': 'Helvetica',
+    'helvetica-oblique': 'Helvetica-Oblique',
+    'helvetica-bold': 'Helvetica-Bold',
+    'helvetica-boldoblique': 'Helvetica-BoldOblique',
+    'times-roman': 'Times-Roman',
+    'times-italic': 'Times-Italic',
+    'times-bold': 'Times-Bold',
+    'times-bolditalic': 'Times-BoldItalic',
+    'symbol': 'Symbol',
+    'zapfdingbats': 'ZapfDingbats',
+    'helv': 'Helvetica',
+    'heit': 'Helvetica-Oblique',
+    'hebo': 'Helvetica-Bold',
+    'hebi': 'Helvetica-BoldOblique',
+    'cour': 'Courier',
+    'coit': 'Courier-Oblique',
+    'cobo': 'Courier-Bold',
+    'cobi': 'Courier-BoldOblique',
+    'tiro': 'Times-Roman',
+    'tibo': 'Times-Bold',
+    'tiit': 'Times-Italic',
+    'tibi': 'Times-BoldItalic',
+    'symb': 'Symbol',
+    'zadb': 'ZapfDingbats'}
+
 # Command Line Use
 A command line wrapper is available for this tool. Here are the two commands:
 ##### extractfillpdf
@@ -134,6 +272,7 @@ poppler is only needed if you are using the as_images=True mode of the `flattenp
 - 'pdf2image'
 - 'Pillow'
 - 'poppler'
+- 'pymupdf'
 
 # Useful Websites
 

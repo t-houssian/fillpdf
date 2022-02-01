@@ -360,7 +360,7 @@ def place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_nu
     widget.fill_color = fill_color
     widget.field_name = field_name
     
-    annot = page.add_widget(widget)
+    page.add_widget(widget)
         
     doc.save(output_map_path)
 
@@ -469,7 +469,7 @@ def place_text_box(field_name, prefilled_text, x, y, input_pdf_path, output_map_
     widget.field_value = prefilled_text
     widget.field_label = "arbitrary text - e.g. to help filling the field"
     
-    annot = page.add_widget(widget)
+    page.add_widget(widget)
     field = page.first_widget
     assert field.field_type_string == "Text"
     
