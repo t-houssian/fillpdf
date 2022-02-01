@@ -55,7 +55,37 @@ This project primarily builds upon a forked version of pdfrw called [pdfrw2](htt
         pdf. Try this if the first is not working. (this image technique requires poppler.)
 ###### For Example:
     fillpdfs.flatten_pdf('new.pdf', 'newflat.pdf')
-    
+
+###### Fonts
+    {'courier': 'Courier',
+    'courier-oblique': 'Courier-Oblique',
+    'courier-bold': 'Courier-Bold',
+    'courier-boldoblique': 'Courier-BoldOblique',
+    'helvetica': 'Helvetica',
+    'helvetica-oblique': 'Helvetica-Oblique',
+    'helvetica-bold': 'Helvetica-Bold',
+    'helvetica-boldoblique': 'Helvetica-BoldOblique',
+    'times-roman': 'Times-Roman',
+    'times-italic': 'Times-Italic',
+    'times-bold': 'Times-Bold',
+    'times-bolditalic': 'Times-BoldItalic',
+    'symbol': 'Symbol',
+    'zapfdingbats': 'ZapfDingbats',
+    'helv': 'Helvetica',
+    'heit': 'Helvetica-Oblique',
+    'hebo': 'Helvetica-Bold',
+    'hebi': 'Helvetica-BoldOblique',
+    'cour': 'Courier',
+    'coit': 'Courier-Oblique',
+    'cobo': 'Courier-Bold',
+    'cobi': 'Courier-BoldOblique',
+    'tiro': 'Times-Roman',
+    'tibo': 'Times-Bold',
+    'tiit': 'Times-Italic',
+    'tibi': 'Times-BoldItalic',
+    'symb': 'Symbol',
+    'zadb': 'ZapfDingbats'}
+
 # Command Line Use
 A command line wrapper is available for this tool. Here are the two commands:
 ##### extractfillpdf
