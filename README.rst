@@ -4,15 +4,6 @@ https://pypi.org/project/fillpdf/
 # Overview
 This is a simple package to make filling pdfs much easier. I have delt with a lot projects that involve manipulating pdfs in python. I found no easy solution for writting, or flattening pdfs, so I decided to make a library to make this task much easier. As a young software engineer I kept this library really simple but practicle and am open to any input for the future!
 
-This project primarily builds upon a forked version of pdfrw called [pdfrw2](https://pypi.org/project/pdfrw2/).
-
-- Fills pdfs
-- Lists fields in pdf
-- Flattens pdfs (Turns to a non-editable pdf)\
-- Inserts Images and Text
-- Rotate PDFs
-- Place Images
-
 # Function Documentation
     import fillpdf
     from fillpdf import fillpdfs
@@ -39,28 +30,7 @@ This project primarily builds upon a forked version of pdfrw called [pdfrw2](htt
 - data_dict- dictionary that contains the fields to write to as your key and what to write to it as your value (get this from the get_form_fields function)
 - flatten (default=False)- If True, then the fields will become uneditable when you write to the pdf.
 ###### For Example:
-    data_dict = {'Address # Useful Websites
-
-* [List PDF Fields pdfrw](https://github.com/pmaupin/pdfrw/issues/165)
-* [List PDF Fields](https://stackoverflow.com/questions/3984003/how-to-extract-pdf-fields-from-a-filled-out-form-in-python)
-* [Fill PDF Fields](https://stackoverflow.com/questions/60082481/how-to-edit-checkboxes-and-save-changes-in-an-editable-pdf-using-the-python-pdfr)
-* [Flatten PDFs](https://stackoverflow.com/questions/27023043/generate-flattened-pdf-with-python)
-* [pdfrw2](https://pypi.org/project/pdfrw2/)
-
-# Credit
-- [dvska](https://stackoverflow.com/users/1303068/dvska)
-- [gbroiles](https://github.com/pmaupin/pdfrw/issues/165)
-- [tomatoeshift](https://stackoverflow.com/users/11998874/tomatoeshift)
-- [Tyler Houssian](https://stackoverflow.com/users/13537359/tyler-houssian)
-- [jtplaarj](https://github.com/jtplaarj)
-- [WestHealth](https://github.com/WestHealth/pdf-form-filler)
-- [sarnold](https://github.com/sarnold)
-- [Patrick Maupin](https://github.com/pmaupin)
-
-# Future Work
-* give option to place text by coordinate
-* alter or view pdf versions
-1 Text Box': '500 West Main Street',
+    data_dict = {'Address 1 Text Box': '500 West Main Street',
     'Driving License Check Box': 'Yes',
     'Language 1 Check Box': 'Off',}
     
@@ -270,6 +240,14 @@ Will bring up this menu
     pip install fillpdf 
     conda install -c conda-forge poppler
 poppler is only needed if you are using the as_images=True mode of the `flattenpdf` function
+This project primarily builds upon a forked version of pdfrw called [pdfrw2](https://pypi.org/project/pdfrw2/).
+
+- Fills pdfs
+- Lists fields in pdf
+- Flattens pdfs (Turns to a non-editable pdf)\
+- Inserts Images and Text
+- Rotate PDFs
+- Place Images
 
 # Development Environment
 ##### Builds upon
@@ -278,25 +256,3 @@ poppler is only needed if you are using the as_images=True mode of the `flattenp
 - 'Pillow'
 - 'poppler'
 - 'pymupdf'
-
-# Useful Websites
-
-* [List PDF Fields pdfrw](https://github.com/pmaupin/pdfrw/issues/165)
-* [List PDF Fields](https://stackoverflow.com/questions/3984003/how-to-extract-pdf-fields-from-a-filled-out-form-in-python)
-* [Fill PDF Fields](https://stackoverflow.com/questions/60082481/how-to-edit-checkboxes-and-save-changes-in-an-editable-pdf-using-the-python-pdfr)
-* [Flatten PDFs](https://stackoverflow.com/questions/27023043/generate-flattened-pdf-with-python)
-* [pdfrw2](https://pypi.org/project/pdfrw2/)
-
-# Credit
-- [dvska](https://stackoverflow.com/users/1303068/dvska)
-- [gbroiles](https://github.com/pmaupin/pdfrw/issues/165)
-- [tomatoeshift](https://stackoverflow.com/users/11998874/tomatoeshift)
-- [Tyler Houssian](https://stackoverflow.com/users/13537359/tyler-houssian)
-- [jtplaarj](https://github.com/jtplaarj)
-- [WestHealth](https://github.com/WestHealth/pdf-form-filler)
-- [sarnold](https://github.com/sarnold)
-- [Patrick Maupin](https://github.com/pmaupin)
-
-# Future Work
-* Update placing functions to be able to fill as well
-* alter or view pdf versions
