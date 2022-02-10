@@ -4,6 +4,10 @@ https://pypi.org/project/fillpdf/
 # Documentation:
 [View The Documentation](https://fillpdf.readthedocs.io/en/latest/)
 
+![GitHub](https://img.shields.io/github/license/t-houssian/fillpdf) ![PyPI](https://img.shields.io/pypi/v/fillpdf) ![GitHub last commit](https://img.shields.io/github/last-commit/t-houssian/fillpdf) [![Documentation Status](https://readthedocs.org/projects/fillpdf/badge/?version=latest)](https://fillpdf.readthedocs.io/en/latest/?badge=latest)
+ ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+
+
 # Overview
 This is a simple package to make filling pdfs much easier. I have delt with a lot projects that involve manipulating pdfs in python. I found no easy solution for writting, or flattening pdfs, so I decided to make a library to make this task much easier. As a young software engineer I kept this library really simple but practicle and am open to any input for the future!
 
