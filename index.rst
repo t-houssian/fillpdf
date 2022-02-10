@@ -346,3 +346,12 @@ Builds upon
 - 'Pillow'
 - 'poppler'
 - 'pymupdf'
+
+How To Contribute
+------------------
+- Fork the project
+- Add your changes
+- Open a pull request
+- Once pull request is approved I'll merge in the code and push new version to pypi
+
+- If you want to be a maintainer contact me

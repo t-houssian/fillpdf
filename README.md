@@ -300,3 +300,11 @@ poppler is only needed if you are using the as_images=True mode of the `flattenp
 # Future Work
 * Update placing functions to be able to fill as well
 * alter or view pdf versions
+
+# How To Contribute
+- Fork the project
+- Add your changes
+- Open a pull request
+- Once pull request is approved I'll merge in the code and push new version to pypi
+
+- If you want to be a maintainer contact me
