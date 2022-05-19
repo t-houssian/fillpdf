@@ -207,7 +207,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                 if target and annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
                     key = target[ANNOT_FIELD_KEY][1:-1] # Remove parentheses
                     target_aux = target
-                    while target_aux['/Parent']:  # ADDED to find mo keys that the library does not support
+                    while target_aux['/Parent']:
                         key = target['/Parent'][ANNOT_FIELD_KEY][1:-1] + '.' + key
                         target_aux = target_aux['/Parent']
                     if key in data_dict.keys():
