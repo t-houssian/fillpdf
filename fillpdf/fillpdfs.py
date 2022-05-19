@@ -206,6 +206,10 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                     pass
                 if target and annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
                     key = target[ANNOT_FIELD_KEY][1:-1] # Remove parentheses
+                    target_aux = target
+                    while target_aux['/Parent']:  # ADDED to find mo keys that the library does not support
+                        key = target['/Parent'][ANNOT_FIELD_KEY][1:-1] + '.' + key
+                        target_aux = target_aux['/Parent']
                     if key in data_dict.keys():
                         if target[ANNOT_FORM_type] == ANNOT_FORM_button:
                             # button field i.e. a radiobuttons
@@ -227,6 +231,8 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                     options = []
                                     for each in annotation['/Kids']:
                                         keys2 = each['/AP']['/N'].keys()
+                                        if '/Off' in keys2:
+                                            keys2.remove('/Off')
                                         if ['/Off'] in keys:
                                             keys2.remove('/Off')
                                         export = keys2[0]
