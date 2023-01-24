@@ -296,7 +296,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
 
 
-def rotate_page(deg, input_pdf_path, output_map_path, page_number):
+def rotate_page(deg, input_pdf_path, output_map_path, page_number, **kwargs):
     """
     Rotate a page within the pdf document.
     Parameters
@@ -309,6 +309,8 @@ def rotate_page(deg, input_pdf_path, output_map_path, page_number):
         Path of the new pdf that is generated.
     page_number: float
         Number of the page to get the map of.
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     """
@@ -317,10 +319,10 @@ def rotate_page(deg, input_pdf_path, output_map_path, page_number):
     
     page.set_rotation(deg)
         
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
 
 
-def place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0)):
+def place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0), **kwargs):
     """
     Place a radio box in the pdf document. Use the get_coordinate_map
     function to help with placement.
@@ -351,6 +353,8 @@ def place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_nu
         The color to use (0,0,0) = white, (1,1,1) = black
     font_color: tuple
         The color to use (0,0,0) = white, (1,1,1) = black
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     """
@@ -368,10 +372,10 @@ def place_radiobutton(field_name, x, y, input_pdf_path, output_map_path, page_nu
     
     page.add_widget(widget)
         
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
 
 
-def place_dropdown(field_name, values, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0)):
+def place_dropdown(field_name, values, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0), **kwargs):
     """
     Place a dropdown box widget in the pdf document. Use the get_coordinate_map
     function to help with placement.
@@ -404,6 +408,8 @@ def place_dropdown(field_name, values, x, y, input_pdf_path, output_map_path, pa
         The color to use (0,0,0) = white, (1,1,1) = black
     font_color: tuple
         The color to use (0,0,0) = white, (1,1,1) = black
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     """
@@ -422,10 +428,10 @@ def place_dropdown(field_name, values, x, y, input_pdf_path, output_map_path, pa
     widget.field_value = widget.choice_values[-1]
     page.add_widget(widget)
     
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
 
 
-def place_text_box(field_name, prefilled_text, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0)):
+def place_text_box(field_name, prefilled_text, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, font_size=12, font_name=None, fill_color=(0.8,0.8,0.8), font_color=(0,0,0), **kwargs):
     """
     Place a fillable text box widget in the pdf document. Use the get_coordinate_map
     function to help with placement.
@@ -458,6 +464,8 @@ def place_text_box(field_name, prefilled_text, x, y, input_pdf_path, output_map_
         The color to use (0,0,0) = white, (1,1,1) = black
     font_color: tuple
         The color to use (0,0,0) = white, (1,1,1) = black
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     """
@@ -479,10 +487,10 @@ def place_text_box(field_name, prefilled_text, x, y, input_pdf_path, output_map_
     field = page.first_widget
     assert field.field_type_string == "Text"
     
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
 
 
-def place_image(file_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10):
+def place_image(file_name, x, y, input_pdf_path, output_map_path, page_number, width=10, height=10, **kwargs):
     """
     Place image on the pdf document. Use the get_coordinate_map
     function to help with placement.
@@ -504,6 +512,8 @@ def place_image(file_name, x, y, input_pdf_path, output_map_path, page_number, w
         The width of the image
     height: float
         The height of the image
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     """
@@ -511,10 +521,10 @@ def place_image(file_name, x, y, input_pdf_path, output_map_path, page_number, w
     page = doc[page_number-1]
     
     page.insert_image(fitz.Rect(x, y, x+width, y+height), filename=file_name)
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
 
 
-def place_text(text, x, y, input_pdf_path, output_map_path, page_number, font_size=12, font_name="helv", color=None):
+def place_text(text, x, y, input_pdf_path, output_map_path, page_number, font_size=12, font_name="helv", color=None, **kwargs):
     """
     Place Text on the pdf document. Use the get_coordinate_map
     function to help with placement.
@@ -539,16 +549,18 @@ def place_text(text, x, y, input_pdf_path, output_map_path, page_number, font_si
         https://github.com/t-houssian/fillpdf/blob/main/README.md#fonts
     color: tuple
         The color to use (0,0,0) = white, (1,1,1) = black
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     """
     doc = fitz.open(input_pdf_path)
     page = doc[page_number-1]
     page.insert_text(fitz.Point(x, y), str(text), fontname=font_name, color=color, fontsize=font_size)
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
 
 
-def get_coordinate_map(input_pdf_path, output_map_path, page_number=1):
+def get_coordinate_map(input_pdf_path, output_map_path, page_number=1, **kwargs):
     """
     Creates a map on the pdf page to help in the placement of text, photos,
     and widgets.
@@ -560,6 +572,8 @@ def get_coordinate_map(input_pdf_path, output_map_path, page_number=1):
         Path of the new pdf that is generated.
     page_number: float
         Number of the page to get the map of.
+    kwargs: Dict
+        Additional arguments to pass to fitz save method.
     Returns
     ---------
     A dictionary of form fields and their filled values.
@@ -577,4 +591,4 @@ def get_coordinate_map(input_pdf_path, output_map_path, page_number=1):
         page.insert_text(fitz.Point(x , 12), str(x), fontsize=12, fontname="times-bold", color=(1, 0, 0))
         page.draw_line(fitz.Point(x , 12), fitz.Point(x , max_y), color=(1, 0, 0))
     
-    doc.save(output_map_path)
+    doc.save(output_map_path, **kwargs)
