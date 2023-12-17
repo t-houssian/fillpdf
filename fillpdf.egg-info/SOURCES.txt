@@ -12,3 +12,5 @@ fillpdf.egg-info/dependency_links.txt
 fillpdf.egg-info/entry_points.txt
 fillpdf.egg-info/requires.txt
 fillpdf.egg-info/top_level.txt
+fillpdf/utils/__init__.py
+fillpdf/utils/text_fields.py
