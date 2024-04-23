@@ -177,7 +177,7 @@ def convert_dict_values_to_string(dictionary):
     return res    
     
     
-def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False):
+def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False, fontinfo=None):
     """
     Writes the dictionary values to the pdf. Currently supports text and buttons.
     Does so by updating each individual annotation with the contents of the dat_dict.
@@ -192,12 +192,22 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
     flatten: bool
         Default is False meaning it will stay editable. True means the annotations
         will be uneditable.
+    fontinfo: str
+        Default is None to preserve template font. Example of fontinfo to change text fields: Arial 8.00 Tf 0 g
     Returns
     ---------
     """
     data_dict = convert_dict_values_to_string(data_dict)
 
     template_pdf = pdfrw.PdfReader(input_pdf_path)
+    flatten_mask = 1
+    if fontinfo:
+        PDF_TEXT_APPEARANCE = (
+            pdfrw.objects.pdfstring.PdfString.encode(
+                '/'+fontinfo 
+            )
+        )
+
     for Page in template_pdf.pages:
         if Page[ANNOT_KEY]:
             for annotation in Page[ANNOT_KEY]:
@@ -290,8 +300,12 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                             target.update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )
                             if target[ANNOT_FIELD_KIDS_KEY]:
                                 target[ANNOT_FIELD_KIDS_KEY][0].update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )
+                            if int(target["/Ff"]) > 0:
+                                flatten_mask |= int(target["/Ff"])
+                            if fontinfo:
+                                target.update({"/DA": PDF_TEXT_APPEARANCE})
                 if flatten == True:
-                    annotation.update(pdfrw.PdfDict(Ff=1))
+                    annotation.update(pdfrw.PdfDict(Ff=flatten_mask))
     template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
 
