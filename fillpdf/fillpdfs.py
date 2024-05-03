@@ -5,6 +5,7 @@ from pdf2image import convert_from_path # Needs conda install -c conda-forge pop
 from PIL import Image
 from collections import OrderedDict
 
+from fillpdf.utils.field_format import is_text_field_multiline, make_read_only
 ANNOT_KEY = '/Annots'               # key for all annotations within a page
 ANNOT_FIELD_KEY = '/T'              # Name of field. i.e. given ID of field
 ANNOT_FORM_type = '/FT'             # Form type (e.g. text/button)
@@ -291,7 +292,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                             if target[ANNOT_FIELD_KIDS_KEY]:
                                 target[ANNOT_FIELD_KIDS_KEY][0].update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )
                 if flatten == True:
-                    annotation.update(pdfrw.PdfDict(Ff=1))
+                    annotation.update(pdfrw.PdfDict(Ff=make_read_only(target["/Ff"])))
     template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
 
