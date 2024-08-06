@@ -217,6 +217,9 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                             if not annotation['/T']:
                                 if annotation['/AP']:
                                     keys = annotation['/AP']['/N'].keys()
+                                    if '/off' == keys[0].lower():
+                                        keys.pop(0)
+                                        keys.append('/Off')
                                     if keys[0]:
                                         if keys[0][0] == '/':
                                             keys[0] = str(keys[0][1:])
