@@ -263,11 +263,14 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                             export = None
                             options = annotation[ANNOT_FORM_options]
                             if len(options) > 0:
-                                if type(options[0]) == pdfrw.objects.pdfarray.PdfArray:
-                                    options = list(options)
-                                    options = [pdfrw.objects.pdfstring.PdfString.decode(x[0]) for x in options]
-                                if type(options[0]) == pdfrw.objects.pdfstring.PdfString:
-                                    options = [pdfrw.objects.pdfstring.PdfString.decode(x) for x in options]
+                                optionlist = []
+                                for option in options:
+                                    if type(option) == pdfrw.objects.pdfstring.PdfString:
+                                        optionlist.append(pdfrw.objects.pdfstring.PdfString.decode(option))
+                                    if type(option) == pdfrw.objects.pdfarray.PdfArray:
+                                        for each in option:
+                                            optionlist.append(pdfrw.objects.pdfstring.PdfString.decode(each))
+                                options = optionlist
                             if type(data_dict[key]) == list:
                                 export = []
                                 for each in options:
@@ -285,7 +288,7 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                                     if data_dict[key] != "None" and data_dict[key] != "":
                                         raise KeyError(f"{data_dict[key]} Not An Option For {annotation[ANNOT_FIELD_KEY]}, Options are {options}")
                                 pdfstr = pdfrw.objects.pdfstring.PdfString.encode(data_dict[key])
-                            annotation.update(pdfrw.PdfDict(V=pdfstr, AS=pdfstr))
+                            annotation.update(pdfrw.PdfDict(V=pdfstr, AS=pdfstr, I=pdfstr))
                         elif target[ANNOT_FORM_type] == ANNOT_FORM_text:
                             # regular text field
                             target.update( pdfrw.PdfDict( V=data_dict[key], AP=data_dict[key]) )
