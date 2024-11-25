@@ -265,7 +265,8 @@ def write_fillable_pdf(input_pdf_path, output_pdf_path, data_dict, flatten=False
                             if len(options) > 0:
                                 if type(options[0]) == pdfrw.objects.pdfarray.PdfArray:
                                     options = list(options)
-                                    options = [pdfrw.objects.pdfstring.PdfString.decode(x[0]) for x in options]
+                                    # handle the case where items have an export value different than the item
+                                    options = [pdfrw.objects.pdfstring.PdfString.decode(x[1]) for x in options]
                                 if type(options[0]) == pdfrw.objects.pdfstring.PdfString:
                                     options = [pdfrw.objects.pdfstring.PdfString.decode(x) for x in options]
                             if type(data_dict[key]) == list:
